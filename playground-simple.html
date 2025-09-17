@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Playground - Simple Version</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="16x16" href="favicons/python16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicons/python32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicons/python96.png">
+  <link rel="icon" type="image/png" sizes="120x120" href="favicons/python120.png">
+  <link rel="apple-touch-icon" href="favicons/python120.png">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    .simple-editor {
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.4;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border: none;
+      outline: none;
+      resize: none;
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      tab-size: 4;
+    }
+    
+    .simple-editor:focus {
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+    }
+    
+    .line-numbers {
+      background: #2d2d30;
+      color: #858585;
+      padding: 1rem 0.5rem;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.4;
+      text-align: right;
+      border-right: 1px solid #3e3e42;
+      width: 50px;
+      user-select: none;
+    }
+    
+    .editor-wrapper {
+      display: flex;
+      height: 100%;
+      background: #1e1e1e;
+    }
+    
+    .code-area {
+      flex: 1;
+      position: relative;
+    }
+  </style>
+</head>
+<body class="playground-bg">
+
+  <!-- Playground Header -->
+  <div class="playground-header">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <a href="index.html" class="btn btn-outline-light btn-sm">
+            <i class="fas fa-arrow-left me-2"></i>Back to Home
+          </a>
+        </div>
+        <div class="col-md-6 text-center">
+          <h3 class="playground-title mb-0">
+            <i class="fas fa-code me-2"></i>Python Playground <span class="badge bg-warning text-dark">Simple</span>
+          </h3>
+          <small class="text-light opacity-75">Write, Run & Learn Python</small>
+        </div>
+        <div class="col-md-3 text-end">
+          <div class="playground-controls">
+            <button class="btn btn-sm btn-outline-light me-2" id="helpToggle" title="Toggle Help">
+              <i class="fas fa-question-circle"></i>
+            </button>
+            <div class="dropdown d-inline-block">
+              <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="samplesDropdown" data-bs-toggle="dropdown">
+                <i class="fas fa-book me-1"></i>Examples
+              </button>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="#" onclick="loadSample('hello')">Hello World</a></li>
+                <li><a class="dropdown-item" href="#" onclick="loadSample('variables')">Variables</a></li>
+                <li><a class="dropdown-item" href="#" onclick="loadSample('loops')">Loops</a></li>
+                <li><a class="dropdown-item" href="#" onclick="loadSample('functions')">Functions</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Playground Area -->
+  <div class="container-fluid playground-container">
+    <div class="row h-100">
+      
+      <!-- Code Editor Panel -->
+      <div class="col-lg-6 editor-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i class="fas fa-edit me-2"></i>Code Editor
+          </div>
+          <div class="panel-actions">
+            <button class="btn btn-success btn-sm" id="runBtn">
+              <i class="fas fa-play me-1"></i>Run Code
+            </button>
+            <button class="btn btn-outline-secondary btn-sm ms-2" id="saveBtn">
+              <i class="fas fa-save me-1"></i>Save
+            </button>
+          </div>
+        </div>
+        <div class="editor-container">
+          <div class="editor-wrapper">
+            <div class="line-numbers" id="lineNumbers">1</div>
+            <div class="code-area">
+              <textarea class="simple-editor" id="codeEditor" placeholder="# Write your Python code here...
+print('Hello, Python World!')
+print('Welcome to the Simple Python Playground!')
+
+# Try some basic operations:
+name = 'Python'
+print(f'Learning {name} is fun!')
+
+for i in range(3):
+    print(f'Count: {i + 1}')"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output Console Panel -->
+      <div class="col-lg-6 console-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i class="fas fa-terminal me-2"></i>Output Console
+          </div>
+          <div class="panel-actions">
+            <button class="btn btn-outline-danger btn-sm" id="clearBtn">
+              <i class="fas fa-trash me-1"></i>Clear
+            </button>
+          </div>
+        </div>
+        <div class="console-container">
+          <div id="output" class="console-output">
+            <div class="console-welcome">
+              <i class="fab fa-python console-python-icon"></i>
+              <div class="welcome-text">
+                <h5>Simple Python Playground Ready!</h5>
+                <p>This is a simplified version that should work reliably.</p>
+                <p class="text-muted small">
+                  <i class="fas fa-lightbulb me-1"></i>
+                  Write Python code and click "Run Code" to execute it!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Sidebar -->
+  <div class="help-sidebar" id="helpSidebar">
+    <div class="help-header">
+      <h5><i class="fas fa-book me-2"></i>Python Quick Reference</h5>
+      <button class="btn btn-sm btn-outline-light" id="closeHelp">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="help-content">
+      <div class="help-section">
+        <h6><i class="fas fa-info-circle me-1"></i>Basic Syntax</h6>
+        <div class="help-code">
+          <code># Comments start with #
+print("Hello, World!")
+name = "Python"
+age = 30</code>
+        </div>
+      </div>
+      
+      <div class="help-section">
+        <h6><i class="fas fa-code-branch me-1"></i>Control Flow</h6>
+        <div class="help-code">
+          <code>if age >= 18:
+    print("Adult")
+else:
+    print("Minor")
+
+for i in range(5):
+    print(i)</code>
+        </div>
+      </div>
+      
+      <div class="help-section">
+        <h6><i class="fas fa-function me-1"></i>Functions</h6>
+        <div class="help-code">
+          <code>def greet(name):
+    return f"Hello, {name}!"
+
+result = greet("World")
+print(result)</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+  
+  <script>
+    // Simple Python Playground Implementation
+    class SimplePythonPlayground {
+      constructor() {
+        this.editor = document.getElementById('codeEditor');
+        this.output = document.getElementById('output');
+        this.isRunning = false;
+        
+        this.samples = {
+          hello: `# Hello World Example
+print("Hello, World!")
+print("Welcome to Python!")
+
+name = input("What's your name? ")
+print(f"Nice to meet you, {name}!")`,
+          
+          variables: `# Variables and Data Types
+name = "Python"
+age = 30
+height = 5.9
+is_fun = True
+
+print(f"Language: {name}")
+print(f"Version: {age}")
+print(f"Fun factor: {is_fun}")
+
+# Lists and operations
+numbers = [1, 2, 3, 4, 5]
+print(f"Numbers: {numbers}")
+print(f"Sum: {sum(numbers)}")`,
+
+          loops: `# Loops and Conditions
+print("Counting to 5:")
+for i in range(1, 6):
+    print(f"Number: {i}")
+
+print("\\nEven numbers:")
+for num in range(10):
+    if num % 2 == 0:
+        print(num, end=" ")
+
+print("\\n\\nWhile loop:")
+count = 0
+while count < 3:
+    print(f"Count: {count}")
+    count += 1`,
+
+          functions: `# Functions Example
+def calculate_area(length, width):
+    return length * width
+
+def greet(name, age=None):
+    if age:
+        return f"Hello {name}, you are {age} years old!"
+    return f"Hello {name}!"
+
+# Function calls
+area = calculate_area(5, 3)
+print(f"Area: {area}")
+
+print(greet("Alice"))
+print(greet("Bob", 25))`
+        };
+        
+        this.init();
+      }
+      
+      init() {
+        this.initializeSkulpt();
+        this.setupEventListeners();
+        this.updateLineNumbers();
+        console.log('Simple Python Playground initialized successfully!');
+      }
+      
+      initializeSkulpt() {
+        if (typeof Sk === 'undefined') {
+          this.showError('Python runtime not loaded. Please refresh the page.');
+          return;
+        }
+        
+        Sk.configure({
+          output: (text) => {
+            this.addToConsole(text, 'output');
+          },
+          read: (filename) => {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][filename] === undefined) {
+              throw "File not found: '" + filename + "'";
+            }
+            return Sk.builtinFiles["files"][filename];
+          },
+          inputfun: (prompt) => {
+            return new Promise((resolve) => {
+              this.handleInput(prompt, resolve);
+            });
+          },
+          inputfunTakesPrompt: true
+        });
+      }
+      
+      setupEventListeners() {
+        // Run button
+        document.getElementById('runBtn').addEventListener('click', () => {
+          this.runCode();
+        });
+
+        // Clear button
+        document.getElementById('clearBtn').addEventListener('click', () => {
+          this.clearConsole();
+        });
+
+        // Save button
+        document.getElementById('saveBtn').addEventListener('click', () => {
+          this.saveCode();
+        });
+
+        // Help toggle
+        document.getElementById('helpToggle').addEventListener('click', () => {
+          this.toggleHelp();
+        });
+
+        // Close help
+        document.getElementById('closeHelp').addEventListener('click', () => {
+          this.toggleHelp();
+        });
+
+        // Line numbers update
+        this.editor.addEventListener('input', () => {
+          this.updateLineNumbers();
+          this.autoSave();
+        });
+        
+        this.editor.addEventListener('scroll', () => {
+          document.getElementById('lineNumbers').scrollTop = this.editor.scrollTop;
+        });
+
+        // Keyboard shortcuts
+        this.editor.addEventListener('keydown', (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            this.runCode();
+          }
+          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            this.saveCode();
+          }
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            const start = this.editor.selectionStart;
+            const end = this.editor.selectionEnd;
+            this.editor.value = this.editor.value.substring(0, start) + '    ' + this.editor.value.substring(end);
+            this.editor.selectionStart = this.editor.selectionEnd = start + 4;
+            this.updateLineNumbers();
+          }
+        });
+        
+        // Load saved code
+        const saved = localStorage.getItem('simplePythonPlaygroundCode');
+        if (saved) {
+          this.editor.value = saved;
+          this.updateLineNumbers();
+        }
+      }
+      
+      updateLineNumbers() {
+        const lines = this.editor.value.split('\\n').length;
+        const lineNumbers = document.getElementById('lineNumbers');
+        const numbers = [];
+        for (let i = 1; i <= lines; i++) {
+          numbers.push(i);
+        }
+        lineNumbers.textContent = numbers.join('\\n');
+      }
+      
+      async runCode() {
+        if (this.isRunning) return;
+        
+        const code = this.editor.value.trim();
+        if (!code) {
+          this.addToConsole('No code to run!\\n', 'error');
+          return;
+        }
+
+        this.isRunning = true;
+        const runBtn = document.getElementById('runBtn');
+        const originalContent = runBtn.innerHTML;
+        runBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Running...';
+        runBtn.disabled = true;
+
+        this.addToConsole('>>> Running Python code...\\n', 'input');
+
+        try {
+          await Sk.misceval.asyncToPromise(() => {
+            return Sk.importMainWithBody("<stdin>", false, code, true);
+          });
+          this.addToConsole('\\n>>> Execution completed.\\n', 'input');
+        } catch (error) {
+          this.addToConsole(`Error: ${error.toString()}\\n`, 'error');
+        }
+
+        this.isRunning = false;
+        runBtn.innerHTML = originalContent;
+        runBtn.disabled = false;
+      }
+      
+      addToConsole(text, type = 'output') {
+        const welcome = this.output.querySelector('.console-welcome');
+        if (welcome) {
+          welcome.remove();
+        }
+
+        const line = document.createElement('div');
+        line.className = 'console-line';
+        
+        const timestamp = document.createElement('span');
+        timestamp.className = 'console-timestamp';
+        timestamp.textContent = `[${new Date().toLocaleTimeString()}] `;
+        
+        const content = document.createElement('span');
+        content.className = `console-${type}-text`;
+        content.textContent = text;
+        
+        line.appendChild(timestamp);
+        line.appendChild(content);
+        this.output.appendChild(line);
+        
+        this.output.scrollTop = this.output.scrollHeight;
+      }
+      
+      clearConsole() {
+        this.output.innerHTML = `
+          <div class="console-welcome">
+            <i class="fab fa-python console-python-icon"></i>
+            <div class="welcome-text">
+              <h5>Console Cleared!</h5>
+              <p>Ready for new code execution.</p>
+            </div>
+          </div>
+        `;
+      }
+      
+      handleInput(prompt, resolve) {
+        this.addToConsole(prompt, 'input');
+        
+        const inputLine = document.createElement('div');
+        inputLine.className = 'console-line console-input-line';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control form-control-sm d-inline-block';
+        input.style.width = '200px';
+        input.style.background = 'rgba(255,255,255,0.1)';
+        input.style.border = '1px solid rgba(255,255,255,0.3)';
+        input.style.color = 'white';
+        input.placeholder = 'Enter your input...';
+        
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            const value = input.value;
+            inputLine.innerHTML = `<span class="console-timestamp">[${new Date().toLocaleTimeString()}] </span><span class="console-input-text">> ${value}</span>`;
+            resolve(value);
+          }
+        });
+        
+        inputLine.appendChild(input);
+        this.output.appendChild(inputLine);
+        this.output.scrollTop = this.output.scrollHeight;
+        input.focus();
+      }
+      
+      saveCode() {
+        localStorage.setItem('simplePythonPlaygroundCode', this.editor.value);
+        this.addToConsole('Code saved!\\n', 'output');
+        
+        const saveBtn = document.getElementById('saveBtn');
+        const originalContent = saveBtn.innerHTML;
+        saveBtn.innerHTML = '<i class="fas fa-check me-1"></i>Saved!';
+        saveBtn.classList.add('btn-success');
+        saveBtn.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+          saveBtn.innerHTML = originalContent;
+          saveBtn.classList.remove('btn-success');
+          saveBtn.classList.add('btn-outline-secondary');
+        }, 2000);
+      }
+      
+      autoSave() {
+        clearTimeout(this.autoSaveTimeout);
+        this.autoSaveTimeout = setTimeout(() => {
+          localStorage.setItem('simplePythonPlaygroundAutoSave', this.editor.value);
+        }, 2000);
+      }
+      
+      loadSample(sampleName) {
+        if (this.samples[sampleName]) {
+          this.editor.value = this.samples[sampleName];
+          this.updateLineNumbers();
+          this.addToConsole(`Loaded sample: ${sampleName}\\n`, 'output');
+        }
+      }
+      
+      toggleHelp() {
+        document.getElementById('helpSidebar').classList.toggle('show');
+      }
+      
+      showError(message) {
+        this.addToConsole(`System Error: ${message}\\n`, 'error');
+      }
+    }
+
+    // Global function for samples dropdown
+    function loadSample(sampleName) {
+      if (window.simplePlayground) {
+        window.simplePlayground.loadSample(sampleName);
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if Skulpt is available
+      if (typeof Sk === 'undefined') {
+        document.getElementById('output').innerHTML = `
+          <div class="console-welcome">
+            <i class="fas fa-exclamation-triangle console-python-icon" style="color: #ff6b6b;"></i>
+            <div class="welcome-text">
+              <h5>Python Runtime Not Available</h5>
+              <p>Please check your internet connection and refresh the page.</p>
+              <button class="btn btn-light btn-sm mt-2" onclick="location.reload()">
+                <i class="fas fa-redo me-1"></i>Refresh Page
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      try {
+        window.simplePlayground = new SimplePythonPlayground();
+      } catch (error) {
+        console.error('Failed to initialize simple playground:', error);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -14,39 +14,151 @@
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="homepage-bg">
   
+  <!-- Modern Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top modern-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fab fa-python me-2"></i>
+        <span class="brand-text">Python<span class="brand-accent">Quiz</span></span>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">
+              <i class="fas fa-home me-1"></i>Home
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-gamepad me-1"></i>Playground
+            </a>
+            <ul class="dropdown-menu modern-dropdown">
+              <li><a class="dropdown-item" href="playground.html">
+                <i class="fas fa-rocket me-2"></i>Full Playground<span class="badge bg-primary ms-2">Advanced</span>
+              </a></li>
+              <li><a class="dropdown-item" href="playground-simple.html">
+                <i class="fas fa-code me-2"></i>Simple Playground<span class="badge bg-success ms-2">Beginner</span>
+              </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="diagnostic.html">
+                <i class="fas fa-stethoscope me-2"></i>Compatibility Check
+              </a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">
+              <i class="fas fa-brain me-1"></i>Quiz Tests
+            </a>
+          </li>
+        </ul>
+        
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="diagnostic.html" id="diagnosticNavBtn">
+              <i class="fas fa-shield-alt me-1"></i>System Check
+              <span class="status-indicator" id="systemStatus">
+                <i class="fas fa-circle"></i>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <button class="btn theme-toggle-btn ms-2" onclick="toggleTheme()" title="Toggle Theme">
+              <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
   <!-- Hero Section -->
   <div class="hero-section">
     <div class="container">
-      <div class="row align-items-center min-vh-100">
+      <div class="row align-items-center min-vh-100 pt-5">
         <div class="col-lg-6">
-          <div class="hero-content">
-            <div class="python-logo mb-4">
+          <div class="hero-content fade-in-up">
+            <div class="python-logo mb-4 animate-float">
               <i class="fab fa-python"></i>
             </div>
-            <h1 class="hero-title">Master Python Programming</h1>
-            <p class="hero-subtitle">Test your Python knowledge with our comprehensive quiz collection. Track your progress and become a Python expert!</p>
+            <h1 class="hero-title animate-slide-up">Master Python Programming</h1>
+            <p class="hero-subtitle animate-fade-in">Test your Python knowledge with our comprehensive quiz collection. Track your progress and become a Python expert!</p>
+            
+            <!-- New Feature Highlights -->
+            <div class="feature-highlights mb-4">
+              <div class="feature-item">
+                <i class="fas fa-rocket"></i>
+                <span>Interactive Playground</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Progress Tracking</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-medal"></i>
+                <span>Skill Assessment</span>
+              </div>
+            </div>
+            
             <div class="hero-stats">
-              <div class="stat">
+              <div class="stat animate-counter">
                 <span class="stat-number" id="totalQuestions">...</span>
                 <span class="stat-label">Questions</span>
               </div>
-              <div class="stat">
+              <div class="stat animate-counter">
                 <span class="stat-number" id="totalTests">...</span>
                 <span class="stat-label">Tests</span>
               </div>
-              <div class="stat">
+              <div class="stat animate-counter">
                 <span class="stat-number" id="completedTests">0</span>
                 <span class="stat-label">Completed</span>
+              </div>
+            </div>
+            
+            <div class="hero-actions mt-4">
+              <a href="playground.html" class="btn btn-playground pulse me-3">
+                <i class="fas fa-code me-2"></i>
+                Python Playground
+                <span class="playground-badge">New!</span>
+              </a>
+              <a href="playground-simple.html" class="btn btn-outline-light me-2">
+                <i class="fas fa-rocket me-2"></i>
+                Simple Version
+              </a>
+              <a href="diagnostic.html" class="btn btn-diagnostic my-3">
+                <i class="fas fa-stethoscope me-2"></i>
+                System Check
+              </a>
+            </div>
+            
+            <!-- Compatibility Status -->
+            <div class="compatibility-status mt-3">
+              <div class="status-item" id="browserCompatibility">
+                <i class="fas fa-browser text-success"></i>
+                <span>Browser Compatible</span>
+              </div>
+              <div class="status-item" id="jsStatus">
+                <i class="fas fa-code text-success"></i>
+                <span>JavaScript Enabled</span>
+              </div>
+              <div class="status-item" id="storageStatus">
+                <i class="fas fa-database text-success"></i>
+                <span>Storage Available</span>
               </div>
             </div>
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="quiz-selection-area">
+          <div class="quiz-selection-area animate-slide-in">
             <h3 class="selection-title">Choose Your Test</h3>
             <p class="selection-subtitle">Each test contains 15 carefully crafted questions</p>
             <div class="row g-3" id="testCards"></div>
@@ -59,26 +171,213 @@
         </div>
       </div>
     </div>
+    
+    <!-- Floating Action Button for Quick Access -->
+    <div class="floating-actions">
+      <button class="fab-main" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick Actions">
+        <i class="fas fa-plus"></i>
+      </button>
+      <div class="fab-menu">
+        <a href="playground.html" class="fab-item" data-bs-toggle="tooltip" data-bs-placement="left" title="Python Playground">
+          <i class="fas fa-code"></i>
+        </a>
+        <a href="diagnostic.html" class="fab-item" data-bs-toggle="tooltip" data-bs-placement="left" title="System Check">
+          <i class="fas fa-stethoscope"></i>
+        </a>
+        <a href="#testCards" class="fab-item scroll-to" data-bs-toggle="tooltip" data-bs-placement="left" title="Start Quiz">
+          <i class="fas fa-brain"></i>
+        </a>
+      </div>
+    </div>
   </div>
+
+  <!-- Features Section -->
+  <section class="features-section scroll-animate">
+    <div class="container">
+      <div class="row text-center mb-5">
+        <div class="col-12">
+          <h2 class="section-title">Why Choose Python Quiz?</h2>
+          <p class="section-subtitle">Enhance your Python skills with our comprehensive learning platform</p>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h4>Smart Questions</h4>
+            <p>Carefully crafted questions covering all Python concepts from basics to advanced topics.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-code"></i>
+            </div>
+            <h4>Live Playground</h4>
+            <p>Practice Python code in real-time with our interactive playground environment.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h4>Progress Tracking</h4>
+            <p>Monitor your learning journey and track improvements across different Python topics.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script src="questions.js"></script>
   <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById('themeIcon');
+      
+      if (body.classList.contains('dark-theme')) {
+        body.classList.remove('dark-theme');
+        themeIcon.className = 'fas fa-moon';
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.classList.add('dark-theme');
+        themeIcon.className = 'fas fa-sun';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Load saved theme
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.getElementById('themeIcon').className = 'fas fa-sun';
+      }
+    }
+
+    // Animate numbers
+    function animateCounter(element, target) {
+      let current = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          element.textContent = target;
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.floor(current);
+        }
+      }, 30);
+    }
+
+    // Compatibility check
+    function checkCompatibility() {
+      const browserStatus = document.getElementById('browserCompatibility');
+      const jsStatus = document.getElementById('jsStatus');
+      const storageStatus = document.getElementById('storageStatus');
+      const systemStatus = document.getElementById('systemStatus');
+
+      // Check browser compatibility
+      const isModernBrowser = window.fetch && window.Promise && window.localStorage;
+      if (!isModernBrowser) {
+        browserStatus.innerHTML = '<i class="fas fa-exclamation-triangle text-warning"></i><span>Browser Outdated</span>';
+      }
+
+      // Check storage
+      try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+      } catch(e) {
+        storageStatus.innerHTML = '<i class="fas fa-times text-danger"></i><span>Storage Unavailable</span>';
+      }
+
+      // Update system status indicator
+      const allGood = isModernBrowser && typeof(Storage) !== "undefined";
+      if (allGood) {
+        systemStatus.innerHTML = '<i class="fas fa-circle text-success"></i>';
+        systemStatus.title = 'System Ready';
+      } else {
+        systemStatus.innerHTML = '<i class="fas fa-circle text-warning"></i>';
+        systemStatus.title = 'System Issues Detected';
+      }
+    }
+
+    // Floating action button functionality
+    function initFloatingActionButton() {
+      const fabMain = document.querySelector('.fab-main');
+      const fabMenu = document.querySelector('.fab-menu');
+      
+      fabMain.addEventListener('click', () => {
+        fabMenu.classList.toggle('show');
+        fabMain.classList.toggle('active');
+      });
+
+      // Close FAB when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.floating-actions')) {
+          fabMenu.classList.remove('show');
+          fabMain.classList.remove('active');
+        }
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('.scroll-to').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    }
+
+    // Initialize parallax effect
+    function initParallax() {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const pythonLogo = document.querySelector('.python-logo');
+        if (pythonLogo) {
+          pythonLogo.style.transform = `translateY(${scrolled * 0.1}px)`;
+        }
+      });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+      loadTheme();
+      checkCompatibility();
+      initFloatingActionButton();
+      initParallax();
+
+      // Initialize tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
       // Get total questions dynamically from questions.js
       const totalQuestions = questions.length;
       const perTest = 15;
       const testCount = Math.ceil(totalQuestions / perTest);
       const testCards = document.getElementById("testCards");
 
-      // Update the stats with dynamic values
-      document.getElementById('totalQuestions').textContent = totalQuestions;
-      document.getElementById('totalTests').textContent = testCount;
+      // Animate stats numbers
+      setTimeout(() => {
+        animateCounter(document.getElementById('totalQuestions'), totalQuestions);
+        animateCounter(document.getElementById('totalTests'), testCount);
+      }, 500);
 
       // Load saved progress
       const savedResults = JSON.parse(localStorage.getItem('quizResults') || '{}');
       
-      // Update completed tests count
-      document.getElementById('completedTests').textContent = Object.keys(savedResults).length;
+      // Update completed tests count with animation
+      setTimeout(() => {
+        animateCounter(document.getElementById('completedTests'), Object.keys(savedResults).length);
+      }, 1000);
 
       for (let i = 1; i <= testCount; i++) {
         const isCompleted = savedResults[`test_${i}`];
@@ -111,6 +410,16 @@
           </div>
         `;
       }
+
+      // Add stagger animation to test cards
+      setTimeout(() => {
+        const cards = document.querySelectorAll('.test-card-modern');
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.style.animation = 'fadeInUp 0.5s ease forwards';
+          }, index * 100);
+        });
+      }, 200);
     });
 
     function resetAllProgress() {
@@ -134,6 +443,37 @@
         }
       });
     }
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.modern-navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Intersection Observer for scroll animations
+    const observeElements = () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            if (entry.target.classList.contains('feature-card')) {
+              entry.target.classList.add('animate');
+            }
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.scroll-animate, .feature-card').forEach(el => {
+        observer.observe(el);
+      });
+    };
+
+    // Initialize scroll animations
+    setTimeout(observeElements, 500);
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
