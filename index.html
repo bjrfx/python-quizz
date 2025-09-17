@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Quiz - Master Your Skills</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="homepage-bg">
+  
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="container">
+      <div class="row align-items-center min-vh-100">
+        <div class="col-lg-6">
+          <div class="hero-content">
+            <div class="python-logo mb-4">
+              <i class="fab fa-python"></i>
+            </div>
+            <h1 class="hero-title">Master Python Programming</h1>
+            <p class="hero-subtitle">Test your Python knowledge with our comprehensive quiz collection. Track your progress and become a Python expert!</p>
+            <div class="hero-stats">
+              <div class="stat">
+                <span class="stat-number" id="totalQuestions">...</span>
+                <span class="stat-label">Questions</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number" id="totalTests">...</span>
+                <span class="stat-label">Tests</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number" id="completedTests">0</span>
+                <span class="stat-label">Completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="quiz-selection-area">
+            <h3 class="selection-title">Choose Your Test</h3>
+            <p class="selection-subtitle">Each test contains 15 carefully crafted questions</p>
+            <div class="row g-3" id="testCards"></div>
+            <div class="mt-4 text-center">
+              <button class="btn btn-outline-danger btn-sm" onclick="resetAllProgress()">
+                <i class="fas fa-trash-alt me-2"></i>Reset All Progress
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Get total questions dynamically from questions.js
+      const totalQuestions = questions.length;
+      const perTest = 15;
+      const testCount = Math.ceil(totalQuestions / perTest);
+      const testCards = document.getElementById("testCards");
+
+      // Update the stats with dynamic values
+      document.getElementById('totalQuestions').textContent = totalQuestions;
+      document.getElementById('totalTests').textContent = testCount;
+
+      // Load saved progress
+      const savedResults = JSON.parse(localStorage.getItem('quizResults') || '{}');
+      
+      // Update completed tests count
+      document.getElementById('completedTests').textContent = Object.keys(savedResults).length;
+
+      for (let i = 1; i <= testCount; i++) {
+        const isCompleted = savedResults[`test_${i}`];
+        const score = isCompleted ? savedResults[`test_${i}`].score : null;
+        const total = isCompleted ? savedResults[`test_${i}`].total : null;
+        
+        testCards.innerHTML += `
+          <div class="col-12">
+            <a href="quiz.html?test=${i}" class="test-card-modern ${isCompleted ? 'completed' : ''}" data-test="${i}">
+              <div class="test-card-content">
+                <div class="test-number">${i}</div>
+                <div class="test-info">
+                  <h5 class="test-title">Python Test ${i}</h5>
+                  <p class="test-questions">Questions ${(i-1)*perTest+1} - ${Math.min(i*perTest, totalQuestions)}</p>
+                  ${isCompleted ? `
+                    <div class="test-score">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      Score: ${score}/${total} (${Math.round((score/total)*100)}%)
+                    </div>
+                  ` : ''}
+                </div>
+                <div class="test-action">
+                  ${isCompleted ? 
+                    '<i class="fas fa-redo text-warning" title="Retake Test"></i>' : 
+                    '<i class="fas fa-play text-primary" title="Start Test"></i>'
+                  }
+                </div>
+              </div>
+            </a>
+          </div>
+        `;
+      }
+    });
+
+    function resetAllProgress() {
+      CustomAlert.confirm(
+        'Are you sure you want to reset all quiz progress? This will permanently delete all your saved scores and cannot be undone.',
+        {
+          title: 'Reset All Progress',
+          confirmText: 'Yes, Reset All',
+          cancelText: 'Keep Progress',
+          showIcon: true
+        }
+      ).then((confirmed) => {
+        if (confirmed) {
+          localStorage.removeItem('quizResults');
+          CustomAlert.success(
+            'All quiz progress has been successfully reset!',
+            { title: 'Progress Reset Complete' }
+          ).then(() => {
+            location.reload();
+          });
+        }
+      });
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Custom Alert System for Index Page
+    class CustomAlert {
+      static show(message, type = 'warning', options = {}) {
+        return new Promise((resolve) => {
+          const modal = document.getElementById('customAlertModal');
+          const header = document.getElementById('alertHeader');
+          const title = document.getElementById('alertTitle');
+          const body = document.getElementById('alertBody');
+          const messageEl = document.getElementById('alertMessage');
+          const footer = document.getElementById('alertFooter');
+          const cancelBtn = document.getElementById('alertCancelBtn');
+          const confirmBtn = document.getElementById('alertConfirmBtn');
+
+          header.className = `modal-header ${type}`;
+          
+          let icon = 'fas fa-exclamation-triangle';
+          let titleText = 'Confirmation';
+          
+          switch(type) {
+            case 'warning':
+              icon = 'fas fa-exclamation-triangle';
+              titleText = 'Warning';
+              break;
+            case 'danger':
+              icon = 'fas fa-times-circle';
+              titleText = 'Important';
+              break;
+            case 'success':
+              icon = 'fas fa-check-circle';
+              titleText = 'Success';
+              break;
+            case 'info':
+              icon = 'fas fa-info-circle';
+              titleText = 'Information';
+              break;
+          }
+
+          title.innerHTML = `<i class="${icon} me-2"></i>${options.title || titleText}`;
+          
+          if (options.showIcon) {
+            messageEl.innerHTML = `
+              <i class="alert-icon ${type} ${icon}"></i>
+              ${message}
+            `;
+          } else {
+            messageEl.textContent = message;
+          }
+
+          if (options.confirmOnly) {
+            cancelBtn.style.display = 'none';
+            confirmBtn.textContent = options.confirmText || 'OK';
+            confirmBtn.className = `btn btn-${type === 'danger' ? 'danger' : 'primary'}`;
+          } else {
+            cancelBtn.style.display = 'inline-block';
+            cancelBtn.textContent = options.cancelText || 'Cancel';
+            confirmBtn.textContent = options.confirmText || 'Confirm';
+            confirmBtn.className = `btn btn-${type === 'danger' ? 'danger' : 'primary'}`;
+          }
+
+          const handleConfirm = () => {
+            bootstrap.Modal.getInstance(modal).hide();
+            resolve(true);
+            cleanup();
+          };
+
+          const handleCancel = () => {
+            bootstrap.Modal.getInstance(modal).hide();
+            resolve(false);
+            cleanup();
+          };
+
+          const cleanup = () => {
+            confirmBtn.removeEventListener('click', handleConfirm);
+            cancelBtn.removeEventListener('click', handleCancel);
+          };
+
+          confirmBtn.addEventListener('click', handleConfirm);
+          cancelBtn.addEventListener('click', handleCancel);
+
+          const bsModal = new bootstrap.Modal(modal);
+          bsModal.show();
+
+          modal.addEventListener('hidden.bs.modal', () => {
+            resolve(false);
+            cleanup();
+          }, { once: true });
+        });
+      }
+
+      static confirm(message, options = {}) {
+        return this.show(message, 'warning', { 
+          title: 'Confirm Action',
+          confirmText: 'Yes',
+          cancelText: 'No',
+          showIcon: true,
+          ...options 
+        });
+      }
+
+      static success(message, options = {}) {
+        return this.show(message, 'success', { 
+          title: 'Success',
+          confirmOnly: true,
+          confirmText: 'Great!',
+          showIcon: true,
+          ...options 
+        });
+      }
+    }
+
+    window.CustomAlert = CustomAlert;
+  </script>
+
+  <!-- Custom Alert Modal -->
+  <div class="modal fade" id="customAlertModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-alert">
+        <div class="modal-header" id="alertHeader">
+          <h5 class="modal-title" id="alertTitle">
+            <i class="fas fa-exclamation-triangle me-2"></i>Confirmation
+          </h5>
+        </div>
+        <div class="modal-body text-center" id="alertBody">
+          <p id="alertMessage"></p>
+        </div>
+        <div class="modal-footer justify-content-center" id="alertFooter">
+          <button type="button" class="btn btn-secondary" id="alertCancelBtn">Cancel</button>
+          <button type="button" class="btn btn-primary" id="alertConfirmBtn">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

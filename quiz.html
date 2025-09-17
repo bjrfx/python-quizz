@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Quiz - Test in Progress</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="quiz-bg">
+
+  <!-- Quiz Header -->
+  <div class="quiz-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-4">
+          <a href="index.html" class="btn btn-outline-light btn-sm">
+            <i class="fas fa-arrow-left me-2"></i>Back to Home
+          </a>
+        </div>
+        <div class="col-md-4 text-center">
+          <h3 class="quiz-title mb-0" id="quizTitle">Python Test 1</h3>
+        </div>
+        <div class="col-md-4 text-end">
+          <div class="quiz-stats">
+            <span class="current-question" id="currentQuestion">1</span>
+            <span class="text-muted">/</span>
+            <span class="total-questions" id="totalQuestions">15</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="quiz-progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Quiz Container -->
+  <div class="container quiz-container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        
+        <!-- Question Navigation -->
+        <div class="question-nav mb-4" id="questionNav"></div>
+
+        <!-- Current Question -->
+        <div class="question-card" id="questionCard">
+          <div class="question-header">
+            <span class="question-number" id="questionNumber">Question 1</span>
+            <div class="question-actions">
+              <button class="btn btn-sm btn-outline-secondary" onclick="markForReview()" id="markBtn">
+                <i class="fas fa-bookmark"></i> Mark for Review
+              </button>
+            </div>
+          </div>
+          <div class="question-content" id="questionContent">
+            <!-- Question will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="quiz-navigation">
+          <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn" disabled>
+            <i class="fas fa-chevron-left me-2"></i>Previous
+          </button>
+          <div class="nav-center">
+            <button class="btn btn-warning" onclick="clearResponse()" id="clearBtn">
+              <i class="fas fa-eraser me-2"></i>Clear Response
+            </button>
+          </div>
+          <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">
+            Next<i class="fas fa-chevron-right ms-2"></i>
+          </button>
+          <button class="btn btn-success" onclick="submitQuiz()" id="submitBtn" style="display: none;">
+            <i class="fas fa-check me-2"></i>Submit Quiz
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Modal -->
+  <div class="modal fade" id="resultsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Quiz Results</h5>
+        </div>
+        <div class="modal-body" id="resultsContent">
+          <!-- Results will be shown here -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-danger" onclick="resetQuizData()">
+            <i class="fas fa-redo me-2"></i>Reset This Quiz
+          </button>
+          <a href="index.html" class="btn btn-secondary">
+            <i class="fas fa-home me-2"></i>Back to Home
+          </a>
+          <button class="btn btn-success" onclick="nextQuiz()" id="nextQuizBtn">
+            <i class="fas fa-forward me-2"></i>Next Quiz
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Alert Modal -->
+  <div class="modal fade" id="customAlertModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-alert">
+        <div class="modal-header" id="alertHeader">
+          <h5 class="modal-title" id="alertTitle">
+            <i class="fas fa-exclamation-triangle me-2"></i>Confirmation
+          </h5>
+        </div>
+        <div class="modal-body text-center" id="alertBody">
+          <p id="alertMessage"></p>
+        </div>
+        <div class="modal-footer justify-content-center" id="alertFooter">
+          <button type="button" class="btn btn-secondary" id="alertCancelBtn">Cancel</button>
+          <button type="button" class="btn btn-primary" id="alertConfirmBtn">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
